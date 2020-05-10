@@ -1,0 +1,39 @@
+
+version:'3'
+
+services:
+  pqlos:
+    images:postgres:latest
+    volumes:
+      -npqlvol:/var/lib/postgres/data
+    restart: always
+    environment:
+      -POSTGRES_USER=adimac
+      -POSTGRES_PASSWORD=1234
+      -POSTGRES_DATABASE=pqdb
+
+  drupos:
+    images: drupal:latest
+    volumes:
+      -ndrmodules:/car/www/html/modules
+      -ndrprofiles:/var/www/html/profiles
+      -ndrsites:/var/www/html/sites
+      -ndrthemes:/var/www/html/themes
+
+    restart: always
+
+    depends_on:
+      -pqlos
+
+    ports:
+      -3000:80
+
+volumes:
+  ndrmodules:
+  ndrprofiles:
+  ndrthemes:
+  ndrsites:
+  npqlvol:
+
+
+          
